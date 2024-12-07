@@ -1,0 +1,123 @@
+import java.util.Scanner;
+
+public class Main{
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Enhanced Console Calculator!");
+        boolean keepRunning = true;
+
+        while (keepRunning) {
+            System.out.println("\nChoose an operation:");
+            System.out.println("1. Addition (+)");
+            System.out.println("2. Subtraction (-)");
+            System.out.println("3. Multiplication (*)");
+            System.out.println("4. Division (/)");
+            System.out.println("5. Square Root (\u221A)");
+            System.out.println("6. Exponentiation (^)");
+            System.out.println("7. Temperature Conversion (Celsius <-> Fahrenheit)");
+            System.out.println("8. Exit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+
+            if (choice == 8) {
+                System.out.println("Exiting the calculator. Goodbye!");
+                keepRunning = false;
+                break;
+            }
+
+            if (choice < 1 || choice > 8) {
+                System.out.println("Invalid choice. Please try again.");
+                continue;
+            }
+
+            switch (choice) {
+                case 1: // Addition
+                case 2: // Subtraction
+                case 3: // Multiplication
+                case 4: // Division
+                    System.out.print("Enter the first number: ");
+                    double num1 = scanner.nextDouble();
+
+                    System.out.print("Enter the second number: ");
+                    double num2 = scanner.nextDouble();
+
+                    double result;
+
+                    switch (choice) {
+                        case 1:
+                            result = num1 + num2;
+                            System.out.println("Result: " + num1 + " + " + num2 + " = " + result);
+                            break;
+                        case 2:
+                            result = num1 - num2;
+                            System.out.println("Result: " + num1 + " - " + num2 + " = " + result);
+                            break;
+                        case 3:
+                            result = num1 * num2;
+                            System.out.println("Result: " + num1 + " * " + num2 + " = " + result);
+                            break;
+                        case 4:
+                            if (num2 == 0) {
+                                System.out.println("Error: Division by zero is not allowed.");
+                            } else {
+                                result = num1 / num2;
+                                System.out.println("Result: " + num1 + " / " + num2 + " = " + result);
+                            }
+                            break;
+                    }
+                    break;
+
+                case 5: // Square Root
+                    System.out.print("Enter the number: ");
+                    double num = scanner.nextDouble();
+                    if (num < 0) {
+                        System.out.println("Error: Square root of a negative number is not defined.");
+                    } else {
+                        result = Math.sqrt(num);
+                        System.out.println("Result: \u221A" + num + " = " + result);
+                    }
+                    break;
+
+                case 6: // Exponentiation
+                    System.out.print("Enter the base: ");
+                    double base = scanner.nextDouble();
+
+                    System.out.print("Enter the exponent: ");
+                    double exponent = scanner.nextDouble();
+
+                    result = Math.pow(base, exponent);
+                    System.out.println("Result: " + base + " ^ " + exponent + " = " + result);
+                    break;
+
+                case 7: // Temperature Conversion
+                    System.out.println("Choose conversion type:");
+                    System.out.println("1. Celsius to Fahrenheit");
+                    System.out.println("2. Fahrenheit to Celsius");
+                    System.out.print("Enter your choice: ");
+                    int tempChoice = scanner.nextInt();
+
+                    if (tempChoice == 1) {
+                        System.out.print("Enter temperature in Celsius: ");
+                        double celsius = scanner.nextDouble();
+                        double fahrenheit = (celsius * 9 / 5) + 32;
+                        System.out.println("Result: " + celsius + "°C = " + fahrenheit + "°F");
+                    } else if (tempChoice == 2) {
+                        System.out.print("Enter temperature in Fahrenheit: ");
+                        double fahrenheit = scanner.nextDouble();
+                        double celsius = (fahrenheit - 32) * 5 / 9;
+                        System.out.println("Result: " + fahrenheit + "°F = " + celsius + "°C");
+                    } else {
+                        System.out.println("Invalid choice. Returning to main menu.");
+                    }
+                    break;
+
+                default:
+                    System.out.println("Invalid operation.");
+            }
+        }
+
+        scanner.close();
+    }
+}
