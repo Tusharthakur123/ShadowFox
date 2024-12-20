@@ -1,0 +1,157 @@
+// InventoryManagementSystem.java
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class main{
+    private JFrame frame;
+    private JTable table;
+    private DefaultTableModel tableModel;
+    private JTextField nameField, quantityField, priceField;
+
+    public main() {
+        // Frame setup
+        frame = new JFrame("Inventory Management System");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+
+        // Panel setup
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        // Table setup
+        String[] columnNames = {"Item Name", "Quantity", "Price"};
+        tableModel = new DefaultTableModel(columnNames, 0);
+        table = new JTable(tableModel);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Form for adding/updating items
+        JPanel formPanel = new JPanel(new GridLayout(3, 2, 5, 5));
+        nameField = new JTextField();
+        quantityField = new JTextField();
+        priceField = new JTextField();
+
+        formPanel.add(new JLabel("Item Name:"));
+        formPanel.add(nameField);
+        formPanel.add(new JLabel("Quantity:"));
+        formPanel.add(quantityField);
+        formPanel.add(new JLabel("Price:"));
+        formPanel.add(priceField);
+
+        // Buttons
+        JButton addButton = new JButton("Add");
+        JButton updateButton = new JButton("Update");
+        JButton deleteButton = new JButton("Delete");
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.add(addButton);
+        buttonPanel.add(updateButton);
+        buttonPanel.add(deleteButton);
+
+        // Add components to panel
+        panel.add(scrollPane, BorderLayout.CENTER);
+        panel.add(formPanel, BorderLayout.NORTH);
+        panel.add(buttonPanel, BorderLayout.SOUTH);
+
+        frame.add(panel);
+
+        // Button actions
+        addButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                addItem();
+            }
+        });
+
+        updateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateItem();
+            }
+        });
+
+        deleteButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteItem();
+            }
+        });
+
+        // Show frame
+        frame.setVisible(true);
+    }
+
+    private void addItem() {
+        String name = nameField.getText();
+        String quantity = quantityField.getText();
+        String price = priceField.getText();
+
+        if (name.isEmpty() || quantity.isEmpty() || price.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Integer.parseInt(quantity);
+            Double.parseDouble(price);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Quantity must be an integer and Price must be a number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        tableModel.addRow(new Object[]{name, quantity, price});
+        clearFields();
+    }
+
+    private void updateItem() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(frame, "Please select a row to update.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String name = nameField.getText();
+        String quantity = quantityField.getText();
+        String price = priceField.getText();
+
+        if (name.isEmpty() || quantity.isEmpty() || price.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "All fields must be filled.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Integer.parseInt(quantity);
+            Double.parseDouble(price);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(frame, "Quantity must be an integer and Price must be a number.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        tableModel.setValueAt(name, selectedRow, 0);
+        tableModel.setValueAt(quantity, selectedRow, 1);
+        tableModel.setValueAt(price, selectedRow, 2);
+        clearFields();
+    }
+
+    private void deleteItem() {
+        int selectedRow = table.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(frame, "Please select a row to delete.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        tableModel.removeRow(selectedRow);
+    }
+
+    private void clearFields() {
+        nameField.setText("");
+        quantityField.setText("");
+        priceField.setText("");
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new main());
+    }
+}
